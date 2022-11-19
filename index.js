@@ -1,11 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const { graphqlHTTP } = require("express-graphql");
+const connectDB = require("./config/db")
+
 
 const todoSchema = require("./Schema/todoSchema");
 const todoResolvers = require("./Resolver/todoResolver");
+
+connectDB();
 
 const app = express();
 
@@ -22,15 +25,5 @@ app.use(
   })
 );
 
-const Port = process.env.PORT;
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(Port, () => console.log("Server started"));
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const PORT = process.env.PORT
+app.listen(PORT, () => console.log(`Listening at Port ${PORT}...`));

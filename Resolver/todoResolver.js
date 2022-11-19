@@ -1,6 +1,5 @@
 const Todo = require("../models/todoModel");
 
-
 module.exports = {
     todos: () => {
     return Todo.find()
@@ -16,7 +15,6 @@ module.exports = {
   todo(args) {
     return Todo.findById(args.todoId)
         .then((todo) => {
-            console.log(todo);
             return { ...todo._doc, _id: todo.id };
         })
         .catch((err) => {
@@ -31,11 +29,9 @@ module.exports = {
     return todo
       .save()
       .then((result) => {
-        console.log(result);
         return { ...result._doc, _id: todo.id };
       })
       .catch((err) => {
-        console.log(err);
         throw err;
       });
   },
