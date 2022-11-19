@@ -30,9 +30,12 @@ app.use(
         } 
         type RootQuery {
             todos: [Todo!]!
+            todo: Todo!
         } 
         type RootMutation {
             createtodo(todoInput: todoInput): Todo
+            updatetodo(todoid: ID!, todoInput: todoInput): Todo
+            deletetodo(todoid: ID!): Todo
         }
 
         schema{
@@ -68,6 +71,29 @@ app.use(
             throw err;
           });
       },
+      updatetodo: (args) => {
+        return Todo.findById(args.todoid)
+          .then((todo) => {
+            todo.Todoitem = args.todoInput.Todoitem;
+            todo.complete = args.todoInput.complete;
+            return todo.save().then((result) => {
+              return { ...result._doc, _id: todo.id };
+            });
+          })
+          .catch((err) => {
+            throw err;
+          }
+          );
+        },
+        deletetodo: (args) => {
+          return Todo.findByIdAndRemove(args.todoid)
+            .then((todo) => {
+              return { ...todo._doc, _id: todo.id };
+            })
+            .catch((err) => {
+              throw err;
+            });
+        },
     },
     graphiql: true,
   })
