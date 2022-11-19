@@ -11,9 +11,6 @@ const todoResolvers = require("./Resolver/todoResolver");
 connectDB();
 
 const app = express();
-
-var todos = [];
-
 app.use(bodyParser.json());
 
 app.use(
