@@ -1,7 +1,7 @@
 const { buildSchema } = require("graphql");
+const {todoResolver} = require("../resolver/todoResolver");
 
-
-module.exports=buildSchema(`
+const typeDefs = buildSchema(`
         type Todo {
             _id: ID!
             Todoitem: String!
@@ -10,20 +10,31 @@ module.exports=buildSchema(`
         input todoInput {
             Todoitem: String!
             complete: Boolean!
-            
         } 
         type RootQuery {
             todos: [Todo!]!
             todo(todoId:ID!): Todo! 
         } 
         type RootMutation {
-            createtodo(todoInput: todoInput): Todo
-            updatetodo(todoid: ID!, todoInput: todoInput): Todo
-            deletetodo(todoid: ID!): Todo
+            createtodo(todoItem: String!): Todo
+            updatetodo(todoid: String!): Todo
+            deletetodo(todoid: String!): Todo
+        }
+        type Message {
+            message:String
+            todo:Todo
+        }
+        
+        type Subscription{
+            notifyUsers:  Message
         }
 
         schema{
             query: RootQuery
             mutation: RootMutation
+            subscription: Subscription
         }
-    `)
+    `);
+
+
+module.exports = typeDefs;
