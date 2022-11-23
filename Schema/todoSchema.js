@@ -16,9 +16,9 @@ const typeDefs = buildSchema(`
             todo(todoId:ID!): Todo! 
         } 
         type RootMutation {
-            createtodo(todoItem: String!): Todo
-            updatetodo(todoid: String!): Todo
-            deletetodo(todoid: String!): Todo
+            createtodo(todoItem: String!): [Todo!]!
+            updatetodo(todoid: String!): [Todo!]!
+            deletetodo(todoid: String!): [Todo!]!
         }
         type Message {
             message:String
