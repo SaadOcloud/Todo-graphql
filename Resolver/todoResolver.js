@@ -41,32 +41,43 @@ const resolver = {
       .then((result) => {
         var Message = { message: 'New todo has been added', todo: todo};
         pubsub.publish(TODO_ADDED, { notifyUsers: Message });
-        return { ...result._doc, _id: todo.id };
+        return Todo.find()
+            .then((todos) => {
+                return todos.map((todo) => {
+                    return { ...todo._doc, _id: todo.id };
+                });
+            }).catch((err) => {
+                throw err;
+            });
       })
       .catch((err) => {
         throw err;
       });
   },
   updatetodo: (args) => {
-    return Todo.findById(args.todoid)
-      .then((todo) => {
-        todo.complete = !todo.complete;
-        return todo.save().then((result) => {
-          return { ...result._doc, _id: todo.id };
-        });
-      })
-      .catch((err) => {
-        throw err;
-      });
+    return Todo.find({})
+        .then((todos) => {
+            const todo = todos.find((todo) => todo.id === args.todoid);
+            todo.complete = !todo.complete;
+            todo.save();
+            return todos.map((todo) => {
+                return { ...todo._doc, _id: todo.id };
+            });
+        })
+        
   },
   deletetodo: (args) => {
-    return Todo.findByIdAndRemove(args.todoid)
-      .then((todo) => {
-        return { ...todo._doc, _id: todo.id };
-      })
-      .catch((err) => {
-        throw err;
-      });
+    return Todo.find({})
+        .then((todos) => {
+            const todo = todos.find((todo) => todo.id === args.todoid);
+            todos.splice(todos.indexOf(todo), 1);
+            todo.delete()
+            return todos.map((todo) => {
+                return { ...todo._doc, _id: todo.id };
+            });
+        }).catch((err) => {
+            throw err;
+        });
   },
 };
 
