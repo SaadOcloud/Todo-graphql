@@ -7,24 +7,32 @@
 }
 
 .row{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    width: 110%;
 }
 
 .label{
     font-weight: bold;
     text-align: center;
     color: rgb(0, 0, 0);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
     text-align: center;
-    margin: 10px;
+    margin: 0px 10px 10px; 
 }
 
-
-
-.addTodo .add-button{
+.add-button{
 background-color: rgb(23, 138, 92);
 color: white;
 font-weight: bold;
+margin-left: 5px;
+padding: 12px;
+border-radius: 5px;
+}
+
+.input{
+    width: 420px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
 }

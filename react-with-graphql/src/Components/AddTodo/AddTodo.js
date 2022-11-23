@@ -23,7 +23,7 @@ const AddTodo = () => {
                 <div className="addTodo">
                     <div className="row">
                         <p className="label">Add New Todo</p>
-                        <input ref={node => { input = node; }} />
+                        <input className='input' ref={node => { input = node; }} placeholder="Write Your Todo Here" />
                         <button className="add-button" onClick={() => { createtodo({ variables: { todoItem: input.value } }); }}>Add</button>
                     </div>
                 </div>

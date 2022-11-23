@@ -7,10 +7,17 @@
 }
 
 .todo-item{
-    padding:1px !important;
-    margin-bottom:10px !important;
+    padding:1px;
+    margin-bottom:10px;
+    display: flex;
+    flex-direction: row;
+    padding: 3px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgb(188, 196, 182);
+    box-shadow: 1px 1px 1px 1px #ccc;
 }
-
 
 .todo-pending {
     margin:auto;
@@ -29,7 +36,9 @@
 }
 
 .delete-icon{
-    padding-left:450px;
+    margin-left: auto;
+    margin-right: 5px;
+    cursor: pointer;
 }
 
 
