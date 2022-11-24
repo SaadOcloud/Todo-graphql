@@ -1,0 +1,19 @@
+.title{
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 15px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    padding: 3px;
+    margin-bottom: 30px;
+    box-shadow: rgb(194, 0, 0) 0px 0px 10px 0px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+.spacer{
+    height:20px;
+    width:100%;
+}
