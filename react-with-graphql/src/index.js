@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
+import ReactDOM from 'react-dom/client';
 import { ApolloClient, InMemoryCache, HttpLink, split } from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import { WebSocketLink } from "apollo-link-ws";
@@ -33,8 +32,10 @@ const link = split(
 
 const client = new ApolloClient({ link, cache: new InMemoryCache() });
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-ReactDOM.render(
+root.render(
     (<ApolloProvider client={client}>
         <App />
-    </ApolloProvider>), document.getElementById('root'));
+    </ApolloProvider>));
+

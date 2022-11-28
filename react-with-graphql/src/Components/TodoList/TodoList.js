@@ -30,7 +30,6 @@ const TodoList = () => (
                                 <Mutation mutation={UPDATE_TODO}>
                                     {(updateTodo) => (
                                         <div className="div-checkbox">
-                                            {console.log(todo.id)}
                                             <input type="checkbox" className="complete-checkbox" checked={false} onClick={() =>{updateTodo({ variables:{updateTodoId: todo.id }})}} />
                                         </div>
                                     )}

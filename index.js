@@ -6,7 +6,7 @@ const connectDB = require("./config/db");
 const { ApolloServer }= require ('@apollo/server');
 const http = require('http');
 const { startStandaloneServer } = require('@apollo/server/standalone')
-
+const { WebSocketServer } = require( 'ws');
 const typeDefs = require("./Schema/todoSchema");
 const todoResolvers = require("./Resolver/todoResolver");
 const Todo = require("./models/todoModel");
@@ -24,6 +24,9 @@ app.use(cors());
 const server = new ApolloServer({
   typeDefs,
   resolvers: todoResolvers,
+  subscriptions: {
+    path: '/subscriptions',
+  },
 });
 
 

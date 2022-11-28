@@ -15,7 +15,6 @@ const updateCache = (cache, { data: { createTodo } }) => {
 }
 
 
-
 const AddTodo = () => {
     return (
         <Mutation mutation={ADD_TODO} update={updateCache} >

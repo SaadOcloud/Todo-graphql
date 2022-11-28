@@ -24,7 +24,7 @@ const resolver = {
         complete: false,
       });
       const todos = await Todo.findAll();
-      pubsub.publish(TODO_ADDED, { todoAdded: todos });
+      pubsub.publish(TODO_ADDED, { todoAdded: todo });
       return Todo.findAll().then((todos) => {
         return todos.map((todo) => {
           return { ...todo.dataValues };
