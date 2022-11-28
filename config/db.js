@@ -1,12 +1,11 @@
-const mongoose = require("mongoose");
+const sequelize = require("../util/databaseconnect");
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    await sequelize.authenticate();
+    console.log("Database Connected");
   } catch (error) {
-    console.log(`Error: ${error.message}`);
-    process.exit(1);
+    console.log(error);
   }
 };
 
