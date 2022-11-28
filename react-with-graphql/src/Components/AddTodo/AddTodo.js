@@ -6,10 +6,10 @@ import './AddTodo.css';
 
 let input;
 
-const updateCache = (cache, { data: { createtodo } }) => {
+const updateCache = (cache, { data: { createTodo } }) => {
     cache.writeQuery({
         query: GET_ALLTODOS,
-        data: { todos: createtodo }
+        data: { todos: createTodo }
     });
     input.value = '';
 }
@@ -19,12 +19,12 @@ const updateCache = (cache, { data: { createtodo } }) => {
 const AddTodo = () => {
     return (
         <Mutation mutation={ADD_TODO} update={updateCache} >
-            {(createtodo, { data }) => (
+            {(createTodo, { data }) => (
                 <div className="addTodo">
                     <div className="row">
                         <p className="label">Add New Todo</p>
                         <input className='input' ref={node => { input = node; }} placeholder="Write Your Todo Here" />
-                        <button className="add-button" onClick={() => { createtodo({ variables: { todoItem: input.value } }); }}>Add</button>
+                        <button className="add-button" onClick={() => { createTodo({ variables: { input: input.value } }); }}>Add</button>
                     </div>
                 </div>
             )}

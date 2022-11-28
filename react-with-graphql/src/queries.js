@@ -2,35 +2,41 @@
 import gql from "graphql-tag";
 
 const GET_ALLTODOS = gql`
-query {
-  todos{
-        _id,
-        Todoitem,
-        complete,
+query Todos {
+    todos {
+      complete
+      Todoitem
+      id
     }
-}`;
+  }`;
 
 const ADD_TODO = gql`
-mutation createtodo($todoItem: String!) {
-  createtodo(todoItem:$todoItem){
-		_id , Todoitem , complete
-	}
-    }
+mutation Mutation($input: String!) {
+  createTodo(input: $input) {
+    Todoitem
+    complete
+    id
+  }
+}
 `;
 
 const REMOVE_TODO = gql`
-mutation deletetodo($todoid: String!) {
-  deletetodo(todoid:$todoid){
-		_id , Todoitem , complete
-	}
+mutation Mutation($deleteTodoId: ID!) {
+  deleteTodo(id: $deleteTodoId) {
+    id
+    Todoitem
+    complete
+  }
 }`;
 
 const UPDATE_TODO = gql`
-mutation updatetodo($todoid: String!) {
-    updatetodo(todoid:$todoid){
-      _id , Todoitem , complete
-	}
-}`;
+mutation Mutation($updateTodoId: ID!) {
+    updateTodo(id: $updateTodoId) {
+      id
+      Todoitem
+      complete
+    }
+  }`;
 
 
 const SUBSCRIBE_NEWTODO = gql`
@@ -38,7 +44,7 @@ subscription {
     notifyUsers {    
         message
         todo{
-        _id , Todoitem , complete
+        id , Todoitem , complete
         }
     }
 }
