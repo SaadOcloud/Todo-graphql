@@ -17,7 +17,6 @@ const typeDefs = buildSchema(`
         type Mutation{
             createTodo(input: String!): [Todo!]!
             updateTodo (id: ID!): [Todo!]!
-            todoAdded: [Todo!]!
             deleteTodo (id: ID!): [Todo!]!
         }
         type Subscription{

@@ -19,7 +19,7 @@ const resolver = {
       });
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todo });
-      return Todo.findAll();
+      return todos;
     },
     updateTodo: async (context, args) => {
       const todo = await Todo.findByPk(args.id);
@@ -27,7 +27,7 @@ const resolver = {
       await todo.save();
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todos });
-      return Todo.findAll();
+      return todos;
       
     },
     deleteTodo: async (context, args) => {
@@ -35,7 +35,7 @@ const resolver = {
       await todo.destroy();
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todos });
-      return Todo.findAll()
+      return todos;
     },
 },
 Subscription: {
