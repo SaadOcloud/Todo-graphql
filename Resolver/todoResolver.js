@@ -1,4 +1,6 @@
 const { PubSub }= require ('graphql-subscriptions');
+const {connectionString} = require('../config/db')
+
 const pubsub = new PubSub();
 
 const Todo = require("../models/todoModel");
@@ -6,79 +8,59 @@ const Todo = require("../models/todoModel");
 const TODO_ADDED = 'TODO_ADDED';
 
 const resolver = {
-    Subscription:{
-        notifyUsers: {
-            subscribe: () => pubsub.asyncIterator([TODO_ADDED])
-        }
-    },
-  todos: () => {
-    return Todo.find()
-      .then((todos) => {
+  Query: {
+    todos: () => {
+      return Todo.findAll().then((todos) => {
+          return todos.map((todo) => {
+              return { ...todo.dataValues };
+          });
+      });
+  },
+  },
+  Mutation: {
+    createTodo: async (context,args) => {
+      const todo = await Todo.create({
+        Todoitem: args.input,
+        complete: false,
+      });
+      const todos = await Todo.findAll();
+      pubsub.publish(TODO_ADDED, { todoAdded: todo });
+      return Todo.findAll().then((todos) => {
         return todos.map((todo) => {
-          return { ...todo._doc, _id: todo.id };
+          return { ...todo.dataValues };
         });
-      })
-      .catch((err) => {
-        throw err;
       });
-  },
-  todo(args) {
-    return Todo.findById(args.todoId)
-      .then((todo) => {
-        return { ...todo._doc, _id: todo.id };
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  createtodo: (args) => {
-    const todo = new Todo({
-      Todoitem: args.todoItem,
-      complete: false
-    });
-    return todo
-      .save()
-      .then((result) => {
-        var Message = { message: 'New todo has been added', todo: todo};
-        pubsub.publish(TODO_ADDED, { notifyUsers: Message });
-        return Todo.find()
-            .then((todos) => {
-                return todos.map((todo) => {
-                    return { ...todo._doc, _id: todo.id };
-                });
-            }).catch((err) => {
-                throw err;
-            });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  },
-  updatetodo: (args) => {
-    return Todo.find({})
-        .then((todos) => {
-            const todo = todos.find((todo) => todo.id === args.todoid);
-            todo.complete = !todo.complete;
-            todo.save();
-            return todos.map((todo) => {
-                return { ...todo._doc, _id: todo.id };
-            });
-        })
-        
-  },
-  deletetodo: (args) => {
-    return Todo.find({})
-        .then((todos) => {
-            const todo = todos.find((todo) => todo.id === args.todoid);
-            todos.splice(todos.indexOf(todo), 1);
-            todo.delete()
-            return todos.map((todo) => {
-                return { ...todo._doc, _id: todo.id };
-            });
-        }).catch((err) => {
-            throw err;
+    },
+    updateTodo: async (context, args) => {
+      const todo = await Todo.findByPk(args.id);
+      todo.complete = !todo.complete;
+      await todo.save();
+      const todos = await Todo.findAll();
+      pubsub.publish(TODO_ADDED, { todoAdded: todos });
+      return Todo.findAll().then((todos) => {
+        return todos.map((todo) => {
+          return { ...todo.dataValues };
         });
+      });
+    },
+    deleteTodo: async (context, args) => {
+      const todo = await Todo.findByPk(args.id);
+      await todo.destroy();
+      const todos = await Todo.findAll();
+      pubsub.publish(TODO_ADDED, { todoAdded: todos });
+      return Todo.findAll().then((todos) => {
+        return todos.map((todo) => {
+          return { ...todo.dataValues };
+        });
+      });
+    },
+},
+Subscription: {
+  notifyUsers: {
+    subscribe: () => pubsub.asyncIterator([TODO_ADDED]),
   },
+}
 };
+
 
 module.exports = resolver;

@@ -1,16 +1,21 @@
-const mongoose = require("mongoose");
+const {Sequeilze, DataTypes} = require('sequelize')
+const {connectionString} = require('../config/db')
 
-const Schema = mongoose.Schema;
-
-const todoschema = new Schema({
+const Todo = connectionString.define('Todo', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
   Todoitem: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   complete: {
-    type: Boolean,
-    required: true,
-  },
-});
+    type: DataTypes.BOOLEAN,
+    allowNull: false
+  }
+})
 
-module.exports = mongoose.model("Todo", todoschema);
+module.exports = Todo

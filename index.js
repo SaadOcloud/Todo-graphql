@@ -2,34 +2,37 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const connectDB = require("./config/db");
-const { graphqlExpress, graphiqlExpress }= require('apollo-server-express');
-
-
-
+const {connectDB} = require("./config/db");
+const { ApolloServer }= require ('@apollo/server');
+const http = require('http');
+const { startStandaloneServer } = require('@apollo/server/standalone')
+const { WebSocketServer } = require( 'ws');
 const typeDefs = require("./Schema/todoSchema");
 const todoResolvers = require("./Resolver/todoResolver");
+const Todo = require("./models/todoModel");
 
 connectDB();
-
 const app = express();
-app.use(bodyParser.json());
+
+const httpServer = http.createServer(app);
+
 
 app.use(cors());
 
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: '/graphql',
-}))
 
-app.use(
-  "/graphql",
-  graphqlExpress({
-    schema: typeDefs,
-    rootValue: todoResolvers,
-    graphiql: true,
-  })
-)
+const server = new ApolloServer({
+  typeDefs,
+  resolvers: todoResolvers,
+  subscriptions: {
+    path: '/subscriptions',
+  },
+});
 
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Listening at Port ${PORT}...`));
+(async() => {
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: process.env.PORT || 4000 },
+  });
+  console.log(`🚀 Server ready at ${url}`);
+})();
+
