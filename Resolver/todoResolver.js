@@ -9,13 +9,7 @@ const TODO_ADDED = 'TODO_ADDED';
 
 const resolver = {
   Query: {
-    todos: () => {
-      return Todo.findAll().then((todos) => {
-          return todos.map((todo) => {
-              return { ...todo.dataValues };
-          });
-      });
-  },
+    todos: () =>  Todo.findAll(),
   },
   Mutation: {
     createTodo: async (context,args) => {
@@ -25,11 +19,7 @@ const resolver = {
       });
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todo });
-      return Todo.findAll().then((todos) => {
-        return todos.map((todo) => {
-          return { ...todo.dataValues };
-        });
-      });
+      return Todo.findAll();
     },
     updateTodo: async (context, args) => {
       const todo = await Todo.findByPk(args.id);
@@ -37,22 +27,15 @@ const resolver = {
       await todo.save();
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todos });
-      return Todo.findAll().then((todos) => {
-        return todos.map((todo) => {
-          return { ...todo.dataValues };
-        });
-      });
+      return Todo.findAll();
+      
     },
     deleteTodo: async (context, args) => {
       const todo = await Todo.findByPk(args.id);
       await todo.destroy();
       const todos = await Todo.findAll();
       pubsub.publish(TODO_ADDED, { todoAdded: todos });
-      return Todo.findAll().then((todos) => {
-        return todos.map((todo) => {
-          return { ...todo.dataValues };
-        });
-      });
+      return Todo.findAll()
     },
 },
 Subscription: {
